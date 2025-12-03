@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Landing Page Card</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgb(197, 92, 118);
+        padding: 10px 20px;
+        color: white;
+      }
+
+      .navbar ol {
+        list-style: none;
+        display: flex;
+        gap: 15px;
+        margin: 0;
+        padding: 0;
+      }
+
+      .button {
+        padding: 8px 12px;
+        background-color: blueviolet;
+        color: white;
+        border-radius: 5px;
+        font-size: 12px;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .button:hover {
+        background-color: burlywood;
+        color: black;
+      }
+
+      .main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .card {
+        background-color: cornsilk;
+        padding: 30px;
+        border-radius: 10px;
+        width: 60%;
+        max-width: 800px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .text {
+        flex: 1;
+      }
+
+      .hero img {
+        width: 100%;
+        max-width: 300px;
+        border-radius: 8px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="navbar">
+      <ol class="left">
+        <li>Home</li>
+        <li>My Project</li>
+      </ol>
+      <ol>
+        <li><button class="button">Contact Me</button></li>
+      </ol>
+    </section>
+
+    <section class="main">
+      <div class="card">
+        <div class="text">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat.
+          </p>
+        </div>
+        <div class="hero">
+          <img
+            src="https://i.pinimg.com/1200x/7c/10/d5/7c10d5212c572a6d753882cbc76d6f0b.jpg"
+            alt="Hero Image"
+          />
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
