@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styleday4.css">
+</head>
+<body>
+    <div class="project-form-container">
+    <h2 class="form-title">ADD MY PROJECT</h2>
+    <form class="project-form">
+        <label for="project-name">Project Name</label>
+        <input type="text" id="project-name" class="form-field">
+
+        <div class="date-group">
+            <div class="date-input-wrapper">
+                <label for="start-date">Start Date</label>
+                <input type="date" id="start-date" class="form-field">
+            </div>
+            <div class="date-input-wrapper">
+                <label for="end-date">End Date</label>
+                <input type="date" id="end-date" class="form-field">
+            </div>
+        </div>
+
+        <label for="description">Description</label>
+        <textarea id="description" class="form-field"></textarea>
+
+        <p class="technologies-label">Technologies</p>
+        <div class="technologies-group">
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="node-js" class="custom-checkbox">
+                <label for="node-js">Node Js</label>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="next-js" class="custom-checkbox">
+                <label for="next-js">Next Js</label>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="react-js" class="custom-checkbox">
+                <label for="react-js">React Js</label>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="typescript" class="custom-checkbox">
+                <label for="typescript">TypeScript</label>
+            </div>
+        </div>
+
+        <p class="upload-label">Upload Image</p>
+        <div class="upload-group" id="upload">
+            <button type="button" class="choose-button">choose</button>
+            <div class="file-path-display">
+                <span class="at-sign">@</span>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-button">submit</button>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const chooseButton = document.querySelector('.choose-button');
+    const filePathDisplay = document.querySelector('.file-path-display');
+    
+    
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*'; 
+    fileInput.style.display = 'none'; 
+    
+    
+    document.body.appendChild(fileInput);
+
+   
+    chooseButton.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+        
+            filePathDisplay.innerHTML = `<span class="file-name">${file.name}</span>`;
+            
+            filePathDisplay.style.color = '#36454F'; 
+        } else {
+          
+            filePathDisplay.innerHTML = `<span class="at-sign">@</span>`;
+            filePathDisplay.style.color = '#a3b1c6'; 
+        }
+    });
+
+   
+    const projectForm = document.querySelector('.project-form');
+
+    projectForm.addEventListener('submit', (event) => {
+        event.preventDefault(); 
+        
+       
+        const projectName = document.getElementById('project-name').value.trim();
+        
+        if (projectName === "") {
+            alert("Harap isi Nama Proyek.");
+            return; 
+        }
+
+  
+        const formData = {
+            name: projectName,
+            startDate: document.getElementById('start-date').value,
+            endDate: document.getElementById('end-date').value,
+            description: document.getElementById('description').value,
+            imageFile: fileInput.files[0] ? fileInput.files[0].name : 'No file chosen'
+        };
+
+        console.log("Data Form yang Disubmit:", formData);
+
+        
+        alert(`Proyek "${formData.name}" berhasil dikirim! (Data di konsol)`);
+        
+     
+        projectForm.reset();
+        fileInput.value = null; 
+        filePathDisplay.innerHTML = `<span class="at-sign">@</span>`; 
+        filePathDisplay.style.color = '#a3b1c6';
+    });
+});
+</script>
+</body>
+</html>
