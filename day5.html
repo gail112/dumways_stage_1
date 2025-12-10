@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio Projects</title>
+    <link rel="stylesheet" href="style5.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>My Portfolio Projects</h1>
+        <div class="header-controls">
+            <button id="toggle-dark">🌙 Dark Mode</button>
+            <select id="sort-projects">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="a-z">A → Z</option>
+                <option value="z-a">Z → A</option>
+            </select>
+            <select id="filter-tech">
+                <option value="all">All Technologies</option>
+                <option value="node-js">Node.js</option>
+                <option value="next-js">Next.js</option>
+                <option value="react-js">React.js</option>
+                <option value="typescript">TypeScript</option>
+            </select>
+            <button id="switch-view">Switch View</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="form-section">
+            <h2>Add Project</h2>
+            <form id="project-form">
+                <label for="project-name">Project Name</label>
+                <input type="text" id="project-name" required>
+
+                <div class="date-group">
+                    <div>
+                        <label for="start-date">Start Date</label>
+                        <input type="date" id="start-date">
+                    </div>
+                    <div>
+                        <label for="end-date">End Date</label>
+                        <input type="date" id="end-date">
+                    </div>
+                </div>
+
+                <label for="description">Description</label>
+                <textarea id="description"></textarea>
+
+                <label>Technologies</label>
+                <div class="technologies-group">
+                    <label><input type="checkbox" id="node-js"> Node.js</label>
+                    <label><input type="checkbox" id="next-js"> Next.js</label>
+                    <label><input type="checkbox" id="react-js"> React.js</label>
+                    <label><input type="checkbox" id="typescript"> TypeScript</label>
+                </div>
+
+                <label>Upload File</label>
+                <div class="upload-wrapper" id="upload-wrapper">
+                    <button type="button" id="choose-file">Choose File</button>
+                    <span id="file-name">No file chosen</span>
+                    <input type="file" id="file-input" hidden accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                </div>
+
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+
+        <section class="projects-section">
+            <div id="project-grid" class="project-grid horizontal"></div>
+        </section>
+    </main>
+
+    <div id="popup-detail" class="popup hidden">
+        <div class="popup-content">
+            <span class="close-popup">&times;</span>
+            <div id="popup-file"></div>
+            <h3 id="popup-title"></h3>
+            <p id="popup-duration"></p>
+            <p id="popup-description"></p>
+            <div id="popup-tech"></div>
+            <a id="popup-download" href="#" download>Download File</a>
+        </div>
+    </div>
+
+    <script src="jsday5.js"></script>
+</body>
+</html>
