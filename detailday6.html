@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title id="detail-page-title">Project Detail</title>
+<style>
+  /* STYLING Halaman Detail */
+  body {
+    font-family: Arial, sans-serif;
+    background: #e6e9f0;
+    margin: 0; 
+    padding: 2rem;
+    color: #222;
+  }
+  h1 {
+    text-align: center;
+    font-weight: 900;
+    margin-bottom: 2rem;
+    color: #007bff;
+  }
+  /* Kontainer utama konten detail */
+  .container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  /* Area Preview File/Gambar */
+  .left {
+    flex: 1 1 300px; 
+    background: #bbb;
+    height: 320px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #555;
+  }
+  .left img, .left iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .left .file-preview {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #f0f0f0;
+    width: 100%;
+    height: 100%;
+  }
+  .right {
+    flex: 1 1 300px; 
+    padding-left: 1rem;
+  }
+  .section {
+    margin-bottom: 1.5rem;
+  }
+  .section h3 {
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+    color: #333;
+  }
+  .duration,
+  .technologies {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .duration-item,
+  .tech-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 500;
+  }
+  .duration-item i {
+    background: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 20px;
+    font-style: normal;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+  }
+  .tech-item i {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    background: #28a745;
+  }
+  .tech-label {
+    font-weight: 400;
+    color: #555;
+  }
+  /* Area Deskripsi */
+  .description {
+    margin-top: 2rem;
+    line-height: 1.7;
+    font-size: 1.05rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: justify;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  .description h3 { margin-bottom: 15px; }
+
+  .back-link {
+    display: block;
+    max-width: 900px;
+    margin: 1rem auto;
+    text-align: center;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+  }
+  @media (max-width: 768px) {
+      .container { flex-direction: column; }
+      .right { padding-left: 0; }
+  }
+</style>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<a href="day6.html" class="back-link">&larr; Back to Projects</a>
+<h1 id="project-title">Project Detail</h1>
+
+<div class="container">
+  <div class="left" id="project-file-preview">No File Preview</div>
+
+  <div class="right">
+    <div class="section duration">
+      <h3>Duration</h3>
+      <div class="duration-item"><i class="fas fa-calendar-alt"></i><span id="detail-dates"></span></div>
+      <div class="duration-item"><i class="fas fa-clock"></i><span id="detail-duration"></span></div>
+    </div>
+
+    <div class="section technologies">
+      <h3>Technologies</h3>
+      <div id="detail-tech-list"></div>
+    </div>
+  </div>
+</div>
+
+<div class="description">
+  <h3>Project Description</h3>
+  <div id="detail-description">Loading description...</div>
+</div>
+
+<script>
+    const STORAGE_KEY = "projectPortfolio";
+
+    // Memuat data proyek dari Local Storage
+    function loadProjects() {
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? JSON.parse(data) : [];
+    }
+    
+    // Fungsi Durasi
+    function getDuration(start, end){
+        if(!start || !end) return "Duration unknown";
+        const s = new Date(start), e = new Date(end);
+        const diff = e-s;
+        if(diff<0) return "Invalid dates";
+        const days = Math.floor(diff/1000/60/60/24);
+        const months = Math.floor(days/30.437); 
+        const remainingDays = Math.floor(days - months * 30.437); 
+        
+        let durationString = "";
+        if (months > 0) {
+            durationString += `${months} month(s)`;
+        }
+        if (remainingDays > 0) {
+            if (months > 0) durationString += " ";
+            durationString += `${remainingDays} day(s)`;
+        }
+        
+        return durationString.trim() || `${days} day(s)`;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Ambil index proyek dari Local Storage yang disimpan saat klik judul di halaman utama
+        const index = localStorage.getItem("currentProjectIndex");
+        const projects = loadProjects();
+        const project = projects[index];
+
+        if (!project) {
+            document.getElementById("project-title").textContent = "Project Not Found";
+            document.getElementById("detail-description").innerHTML = "<p>The requested project could not be loaded. Please return to the project list.</p>";
+            return;
+        }
+
+        // 1. Update Judul dan Metadata
+        document.getElementById("project-title").textContent = project.name;
+        document.getElementById("detail-page-title").textContent = project.name + " Detail";
+        
+        // 2. Update Durasi
+        document.getElementById("detail-dates").textContent = `${project.startDate || 'N/A'} – ${project.endDate || 'N/A'}`;
+        document.getElementById("detail-duration").textContent = getDuration(project.startDate, project.endDate);
+        
+        // 3. Update Deskripsi (Handle line breaks)
+        // Menggunakan map() untuk mengubah deskripsi multi-baris menjadi paragraf HTML
+        document.getElementById("detail-description").innerHTML = project.description.split('\n').filter(p => p.trim() !== '').map(p => `<p>${p.trim()}</p>`).join('');
+
+        // 4. Update Technologies
+        const techList = document.getElementById("detail-tech-list");
+        // Gunakan map() untuk merender daftar teknologi
+        techList.innerHTML = project.technologies.map(tech => 
+            `<div class="tech-item"><i class="fas fa-check"></i><span class="tech-label">${tech.replace('-', '.').toUpperCase()}</span></div>`
+        ).join('');
+
+        // 5. Update File Preview
+        const filePreview = document.getElementById("project-file-preview");
+        if(project.fileBase64){
+            // Logika menampilkan preview (gambar, pdf, atau ikon dokumen)
+            if(project.fileBase64.startsWith("data:image")){
+                filePreview.innerHTML=`<img src="${project.fileBase64}" alt="Project Image">`;
+            } else if(project.fileBase64.startsWith("data:application/pdf")){
+                filePreview.innerHTML=`<iframe src="${project.fileBase64}" style="width:100%;height:320px;"></iframe>`;
+            } else {
+                filePreview.innerHTML=`<div class="file-preview"><i class="fas fa-file-alt" style="font-size: 60px;"></i><p>${project.fileName}</p></div>`;
+            }
+        } else {
+            // Placeholder default jika tidak ada file
+            filePreview.innerHTML=`<img src="https://picsum.photos/320/320?random=${index+100}" alt="Project Placeholder Image">`;
+        }
+        
+        // Hapus index dari Local Storage setelah digunakan
+        localStorage.removeItem("currentProjectIndex");
+
+    });
+</script>
+
+</body>
+</html>
